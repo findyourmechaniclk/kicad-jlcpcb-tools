@@ -34,6 +34,13 @@ jobs:
           sqlite3 --version
           python3 --version
           python3 -c "import sqlite3; import pprint; db = sqlite3.connect(':memory:'); cursor = db.execute('PRAGMA COMPILE_OPTIONS'); pprint.pprint(cursor.fetchall())"
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - name: Install python dependencies
         run: |
           pip install humanize
